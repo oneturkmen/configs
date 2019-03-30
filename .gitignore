@@ -1,0 +1,11 @@
+# Disallow --------
+# Ignore files and directories
+/*
+/*/
+
+
+# Allow --------
+# Vim config & dir
+!.vimrc
+!.vim/
+!.gitignore
