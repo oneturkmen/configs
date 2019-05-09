@@ -10,6 +10,9 @@ call plug#begin("~/.vim/plugs")
     " UtilSnips plugin
     Plug 'sirver/ultisnips'
 
+    " Rust plugin
+    Plug 'rust-lang/rust.vim'
+
 call plug#end()
 
 " Turn off absolution and turn on positive, numbering
