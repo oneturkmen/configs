@@ -9,3 +9,4 @@
 !.vimrc
 !.vim/
 !.gitignore
+!.config/nvim/*
