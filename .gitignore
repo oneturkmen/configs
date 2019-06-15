@@ -15,5 +15,8 @@
 !/.config/nvim
 #.config/nvim/*
 
+# Custom sh-cripts
+!custom-scripts/
 
+# Well of course, cannot ignore yourself, can you, gitignore?
 !.gitignore
