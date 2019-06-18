@@ -35,6 +35,13 @@ call plug#begin("~/.config/nvim/plugs")
     " (Optional) Multi-entry selection UI.
     Plug 'junegunn/fzf'
 
+    " Tagbar
+    Plug 'majutsushi/tagbar'
+
+    " Airline status bar
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+
 call plug#end()
 
 " Autostart Deoplete
@@ -95,5 +102,67 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 cmap vte VimtexErrors
 cmap vtc VimtexCompile
 
+" Tagbar with ctags
+nmap <F8> :TagbarToggle<CR>
 
+" Tagbar window width.
+let g:tagbar_width = 40
+
+" Adjust window width to the longest line.
+" let g:tagbar_expand = 1
+
+" Show line numbers:
+" 0 - none,
+" 1 - absolute,
+" 2 - relative.
+let g:tagbar_show_linenumbers = 0
+
+" Close tagbar window when jumping to a tag.
+let g:tagbar_autoclose = 1
+
+" Do not show 'F1' help message at the top of tagbar window.
+" let g:tagbar_compact = 1
+
+" Preview code. BOJESTVENNO!!!
+let g:tagbar_autopreview = 1
+
+" Show full tag in status line.
+let g:airline#extensions#tagbar#flags = 'f'
+
+let g:rust_use_custom_ctags_defs = 1
+let g:tagbar_type_rust = {
+    \ 'ctagstype' : 'rust',
+    \ 'kinds' : [
+        \ 'n:modules',
+        \ 's:structures:1',
+        \ 'i:interfaces',
+        \ 'c:implementations',
+        \ 'f:functions:1',
+        \ 'g:enumerations:1',
+        \ 't:type aliases:1:0',
+        \ 'v:constants:1:0',
+        \ 'M:macros:1',
+        \ 'm:fields:1:0',
+        \ 'e:enum variants:1:0',
+        \ 'P:methods:1',
+    \ ],
+    \ 'sro': '::',
+    \ 'kind2scope' : {
+        \ 'n': 'module',
+        \ 's': 'struct',
+        \ 'i': 'trait',
+        \ 'c': 'implementation',
+        \ 'f': 'function',
+        \ 'g': 'enum',
+        \ 't': 'type alias',
+        \ 'v': 'variable',
+        \ 'M': 'macro',
+        \ 'm': 'field',
+        \ 'e': 'variant',
+        \ 'P': 'method',
+    \ },
+\ }
+
+" Airline theme
+let g:airline_theme = 'luna'
 
