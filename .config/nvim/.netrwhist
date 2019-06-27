@@ -1,2 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =0
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/usr/share'
+let g:netrw_dirhist_2='/usr/share/gnome-shell'
+let g:netrw_dirhist_3='/usr/share/gnome-shell/extensions'
+let g:netrw_dirhist_4='/usr/share/gnome-shell/extensions/ubuntu-appindicators@ubuntu.com'
+let g:netrw_dirhist_5='/home/rahatly/.local/share/gnome-shell/extensions'
+let g:netrw_dirhist_6='/home/rahatly/.local/share/Google'
+let g:netrw_dirhist_7='/home/rahatly/.local/share/Google/consentOptions'
