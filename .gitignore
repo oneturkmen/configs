@@ -18,5 +18,8 @@
 # Custom sh-cripts
 !custom-scripts/
 
+# Bashrc
+!.bashrc
+
 # Well of course, cannot ignore yourself, can you, gitignore?
 !.gitignore
