@@ -1,5 +1,3 @@
-let g:deoplete#enable_at_startup = 1
-
 " Tab navigation
 set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 
@@ -18,13 +16,7 @@ call plug#begin("~/.config/nvim/plugs")
     Plug 'rust-lang/rust.vim'
 
     " Deoplete - autocompletion
-    if has('nvim')
-        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    else
-        Plug 'Shougo/deoplete.nvim'
-        Plug 'roxma/nvim-yarp'
-        Plug 'roxma/vim-hug-neovim-rpc'
-    endif
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
     " Language client for neovim
     Plug 'autozimu/LanguageClient-neovim', {
@@ -58,11 +50,31 @@ let g:LanguageClient_hasSnippetSupport = 0
 
 " Language servers
 let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'rust': ['env', 'CARGO_TARGET_DIR=/tmp/rls', '~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ 'python': ['/usr/local/bin/pyls'],
-    \ 'cpp': ['~/.local/bin/bin/cquery', '--log-file=/tmp/cq.log', '--init={"CacheDirectory":"/tmp/cquery/"}'],
     \ }
 
+" Whether to show diagnostics inline (1) or in status bar (0).
+" Default: 1
+let g:LanguageClient_useVirtualText = 0
+
+" Do not truncate completion menu width.
+autocmd BufReadPost * call deoplete#custom#source('LanguageClient', 'max_menu_width', 0)
+
+" Indentation settings for specific projects
+augroup ProjectSetup
+au BufRead,BufEnter ~/Desktop/projects/omr/* set autoindent noexpandtab tabstop=4 shiftwidth=4
+augroup END
+
+" YCM-like forward and backward scrolling in autocompletion.
+inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 " Turn off absolution and turn on positive, numbering
 "set nonu
 set number
