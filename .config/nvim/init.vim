@@ -1,3 +1,5 @@
+let g:deoplete#enable_at_startup = 1
+
 " Tab navigation
 set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 
@@ -16,7 +18,13 @@ call plug#begin("~/.config/nvim/plugs")
     Plug 'rust-lang/rust.vim'
 
     " Deoplete - autocompletion
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    if has('nvim')
+        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    else
+        Plug 'Shougo/deoplete.nvim'
+        Plug 'roxma/nvim-yarp'
+        Plug 'roxma/vim-hug-neovim-rpc'
+    endif
 
     " Language client for neovim
     Plug 'autozimu/LanguageClient-neovim', {
@@ -30,9 +38,21 @@ call plug#begin("~/.config/nvim/plugs")
     " Tagbar
     Plug 'majutsushi/tagbar'
 
+    " gutentags for tag file generation
+    "Plug 'ludovicchabant/vim-gutentags'
+
     " Airline status bar
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
+
+    " Nerd tree
+    Plug 'scrooloose/nerdtree'
+
+    " English grammar checker
+    Plug 'rhysd/vim-grammarous'
+
+    " Surroundings
+    Plug 'tpope/vim-surround'
 
 call plug#end()
 
@@ -50,31 +70,11 @@ let g:LanguageClient_hasSnippetSupport = 0
 
 " Language servers
 let g:LanguageClient_serverCommands = {
-    \ 'rust': ['env', 'CARGO_TARGET_DIR=/tmp/rls', '~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \ 'python': ['/usr/local/bin/pyls'],
+    \ 'cpp': ['~/Desktop/ccls/Release/ccls'],
     \ }
 
-" Whether to show diagnostics inline (1) or in status bar (0).
-" Default: 1
-let g:LanguageClient_useVirtualText = 0
-
-" Do not truncate completion menu width.
-autocmd BufReadPost * call deoplete#custom#source('LanguageClient', 'max_menu_width', 0)
-
-" Indentation settings for specific projects
-augroup ProjectSetup
-au BufRead,BufEnter ~/Desktop/projects/omr/* set autoindent noexpandtab tabstop=4 shiftwidth=4
-augroup END
-
-" YCM-like forward and backward scrolling in autocompletion.
-inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 " Turn off absolution and turn on positive, numbering
 "set nonu
 set number
@@ -103,11 +103,11 @@ let g:tex_conceal='abdmg'
 " UltiSnips configs
 "inoremap <tab> <Nop>
 "inoremap <s-tab> <Nop>
-let g:UltiSnipsSnippetsDir = $HOME."/.config/nvim/ultisnips"
-let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/ultisnips']
-let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsJumpForwardTrigger = '<tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+"let g:UltiSnipsSnippetsDir = $HOME."/.config/nvim/ultisnips"
+"let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/ultisnips']
+"let g:UltiSnipsExpandTrigger = '<tab>'
+"let g:UltiSnipsJumpForwardTrigger = '<tab>'
+"let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
 
 " Aliases Map Vimtex commands to shorter ones
@@ -181,3 +181,19 @@ let g:airline_theme = 'luna'
 :set guicursor=
 " Workaround some broken plugins which set guicursor indiscriminately.
 :autocmd OptionSet guicursor noautocmd set guicursor=
+
+" Automatically start NERDTree when vim is started
+"autocmd vimenter * NERDTree
+
+" Shortcut to open Nerdtree
+nmap <F6> :NERDTreeToggle<CR>
+
+" Gutentag is annoying when wq-ing vim.
+let g:gutentags_exclude_filetypes = ['gitcommit', 'gitconfig', 'gitrebase', 'gitsendemail', 'git']
+
+" Add autogroup for tag generation
+augroup tagAug
+  autocmd!
+  " If we're working in a git commit (or similar), disable tag file generation
+  autocmd FileType git,gitcommit,gitrebase,gitsendemail :let g:gutentags_enabled=0
+augroup end
