@@ -152,3 +152,22 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+##### BASH ALIASES #####
+
+# Neovim
+alias vi=nvim
+
+# Python3
+alias py3=python3
+
+# Java home for gradle
+alias gradle="export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && gradle"
+
+# Youtubedl
+alias ydl="youtube-dl --extract-audio --audio-format mp3"
+
+# Git clone (temporary)
+alias gc="git clone"
+
+
+
