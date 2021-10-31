@@ -57,8 +57,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    PS1='${debian_chroot: +($debian_chroot)}\[\033[01;34m\]\u@\h\[\033[00m\]: \[\033[01;32m\]\$ \[\033[00m\]'
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -117,31 +116,39 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# for matlab
-alias matlab="/usr/local/MATLAB/R2018b/bin/matlab"
 
-# for python3
-alias py3="python3"
+# Keep the damn PATH persistent!
+PATH=${PATH}:/opt/gradle/gradle-6.0.1/bin
+PATH=${PATH}:~/codeql-home/codeql-cli
+export PATH
 
-# for downloading mp3 from youtube
-alias ymp3="youtube-dl --extract-audio --audio-format mp3"
+source /etc/environment
 
-# for neovim
-alias vi="nvim"
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
 
-# creates blog post automatically with formatting
-alias blogpost="~/custom-scripts/create_jekyll_post.sh"
-
-# virtualenv and virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-source /usr/local/bin/virtualenvwrapper.sh
-# Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 
-PATH="/home/rahatly/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/rahatly/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/rahatly/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/rahatly/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/rahatly/perl5"; export PERL_MM_OPT;
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Golang stuff
+export PATH=$PATH:/usr/local/go/bin
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/rahatly/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/rahatly/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/rahatly/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/rahatly/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
